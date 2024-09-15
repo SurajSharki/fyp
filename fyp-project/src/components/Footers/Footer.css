@@ -1,0 +1,44 @@
+.footer-section {
+    background-color: #343a40; /* Dark background */
+    padding: 2rem 0; /* Padding for the footer */
+  }
+  
+  .footer-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+  }
+  
+  .footer-subtitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .footer-logo {
+    height: 50px; /* Adjust the logo size */
+  }
+  
+  .hover-opacity:hover {
+    opacity: 0.7; /* Hover effect for social links */
+  }
+  .d-flex {
+    display: flex;
+    gap: 8px; /* Adjust the gap as needed */
+  }
+  
+  .text-light {
+    color: #f8f9fa; /* Light color for text/icons */
+  }
+  
+  .text-light:hover {
+    color: #e2e6ea; /* Slightly lighter color on hover */
+  }
+  
+  .hover-opacity:hover {
+    opacity: 0.8; /* Reduce opacity on hover for effect */
+  }
+  
+  a {
+    font-size: 20px; /* Adjust icon size as needed */
+    transition: opacity 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+  }
+    

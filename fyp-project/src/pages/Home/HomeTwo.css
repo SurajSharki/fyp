@@ -1,0 +1,8 @@
+.hero-img {
+  background-position: center;
+  background-size: cover;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}

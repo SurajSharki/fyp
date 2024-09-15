@@ -1,0 +1,37 @@
+.signup-container {
+    background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+  }
+  
+  .signup-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-title {
+    font-size: 2rem;
+    font-weight: bold;
+    background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, #4facfe, #00f2fe);
+  }
+  
+  .signup-description {
+    color: #6c757d;
+  }
+  
+  .signup-form .form-check-input:checked {
+    background-color: #4facfe;
+    border-color: #4facfe;
+  }
+  
+  .signup-form .btn-primary {
+    background-color: #4facfe;
+    border-color: #4facfe;
+  }
+  
+  .signup-form .btn-primary:hover {
+    background-color: #00f2fe;
+    border-color: #00f2fe;
+  }
+  

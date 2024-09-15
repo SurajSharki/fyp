@@ -1,0 +1,161 @@
+/* Container for the profile page */
+.profile-container {
+    background: linear-gradient(45deg, #6610f2, #d63384, #fd7e14);
+    padding: 2rem;
+    min-height: 100vh;
+  }
+  
+  /* Card styling */
+  .profile-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+  
+  /* Header styling */
+  .profile-header {
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .logo-image {
+    width: 40px; /* Reduced size */
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-title {
+    background-image: linear-gradient(to right, #6610f2, #d63384);
+    background-clip: text;
+    color: transparent;
+    font-size: 2rem;
+  }
+  
+  .profile-description {
+    color: #6c757d;
+  }
+  
+  /* Profile body styling */
+  .profile-body {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  /* Profile info section */
+  .profile-info {
+    flex: 1;
+  }
+  
+  .profile-picture-container {
+    position: relative;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-picture {
+    border-radius: 50%;
+    border: 2px solid #6610f2;
+    cursor: pointer;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .camera-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #6610f2;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+  
+  .profile-name {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .profile-email {
+    color: #6610f2;
+  }
+  
+  /* Edit form styling */
+  .edit-form .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .edit-form .form-control {
+    border: 1px solid #6610f2;
+  }
+  
+  .save-button {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    color: white;
+  }
+  
+  /* Edit profile button */
+  .edit-button {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+    color: white;
+  }
+  
+  /* Tabs styling */
+  .profile-tabs .nav-tabs {
+    margin-bottom: 1rem;
+  }
+  
+  .nav-link.active {
+    background-color: #6610f2;
+    color: white;
+  }
+  
+  .tab-content {
+    background: #f8f9fa;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+  }
+  
+  /* Sections for applied events and academies */
+  .events-section, .academies-section {
+    margin-top: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .badge {
+    padding: 0.5rem;
+  }
+  
+  .badge-success {
+    background-color: #5bc0de;
+  }
+  
+  .badge-secondary {
+    background-color: #6c757d;
+  }
+  
+  .badge-primary {
+    background-color: #6610f2;
+  }
+  
