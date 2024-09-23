@@ -1,15 +1,33 @@
 import { useState } from "react";
-import "./Signup.css"; // Importing external CSS
+import "./Signup.css"; 
+// Importing external CSS
+import axios from "axios"
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("student");
+  const [usertype, setUserType] = useState("student");
 
-  const handleSubmit = (e) => {
+
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Handle the sign-up logic here
-    console.log("Sign-up attempted with:", { email, password, userType });
+    try {
+      const resp = await axios.post("http://localhost:8000/register",{
+        email: email,
+        password: password,
+        usertype: usertype
+      })
+     if(resp.data.status === "ok"){
+      alert(resp.data.message)
+     }
+
+    } catch (error) {
+      console.log(error)
+      
+    }
+    console.log("Sign-up attempted with:", { email, password, usertype });
   };
 
   return (
@@ -30,6 +48,7 @@ export default function Signup() {
                 type="email"
                 className="form-control"
                 placeholder="m@example.com"
+                style={{border:"1px solid black !important"}}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -41,6 +60,7 @@ export default function Signup() {
                 id="password"
                 type="password"
                 className="form-control"
+                style={{border:"1px solid black !important"}}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -55,7 +75,7 @@ export default function Signup() {
                   name="userType"
                   id="student"
                   value="student"
-                  checked={userType === "student"}
+                  checked={usertype === "student"}
                   onChange={() => setUserType("student")}
                 />
                 <label className="form-check-label" htmlFor="student">Student</label>
@@ -67,7 +87,7 @@ export default function Signup() {
                   name="userType"
                   id="academy"
                   value="academy"
-                  checked={userType === "academy"}
+                  checked={usertype === "academy"}
                   onChange={() => setUserType("academy")}
                 />
                 <label className="form-check-label" htmlFor="academy">Academy</label>

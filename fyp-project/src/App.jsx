@@ -2,12 +2,7 @@
 import React from 'react';
 import Navbar from './components/Navbar/Navbar';
 import{ Route, Routes} from 'react-router-dom'
-// import Academy from './pages/Academy/AcademyProfile.jsx';
 import HomeTwo from './pages/Home/HomeTwo.jsx';
-// import Blog from './pages/Blog/Blog.jsx';
-// import Contact from './pages/Contact/Contact.jsx';
-// import Events from './pages/Event/Events.jsx';
-// import AcademyProfile from './pages/Academy/AcademyProfile.jsx';
 import Login from "./pages/login/Login.jsx"
 import Signup from './pages/login/Signup.jsx';
 import AcademyProfile from './pages/AcademyProfile/AcademyProfile.jsx';
@@ -17,7 +12,8 @@ import AddEvent from './pages/AcademyProfile/AddEvent.jsx';
 import UpdateEvent from './pages/AcademyProfile/UpdateEvent.jsx';
 import TrainingPage from './pages/Sessions/TrainingPage.jsx';
 import Footer from './components/Footers/Footer.jsx';
-// import PlaceAcademy from "./pages/PlaceAcademy/"
+import AboutUs from "./pages/About/AboutUs.jsx";
+
 
 function App() {
   return (
@@ -31,14 +27,14 @@ function App() {
         {/* <Route path='/events' element={<Events/>}></Route> */}
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/signup" element={<Signup></Signup>}></Route>
-        <Route path='/academyprofile' element={<AcademyProfile></AcademyProfile>}/>
+        <Route path='/academyprofile/:academyId' element={<AcademyProfile></AcademyProfile>}/>
         <Route path='/parentprofile' element={<ParentProfile></ParentProfile>}></Route>
         <Route path="/addtraining" element={<AddTraining></AddTraining>}></Route>
         <Route path="/addevent" element={<AddEvent></AddEvent>}></Route>
         <Route path="/updatevent" element={<UpdateEvent></UpdateEvent>}></Route>
         <Route path="/trainings" element={<TrainingPage></TrainingPage>}></Route>
-      
-        {/* <Route path ='/palceAcademy' element={<PlaceAcademy/>}/> */}
+        <Route path='/About' element={<AboutUs></AboutUs>}></Route>
+        
       </Routes>
       <Footer/>
     </div>

@@ -1,18 +1,45 @@
 import { useState } from "react";
 import "./Login.css"; // External CSS
+import axios from "axios"
+import {useNavigate} from "react-router-dom"
+// import {jwtdecode} from "jwt-decode"
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigator = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    try {
+      const resp = await axios.post("http://localhost:8000/login",{
+        email: email,
+        password: password,
+       
+      })
+    console.log("user type",resp.data.data.usertype)
+     if(resp.data.status === "ok"){
+      if(resp.data.data.usertype==="student"){
+        navigator("/student")
+      }else if(resp.data.data.usertype ==="academy"){
+        navigator(`/academyprofile/${resp.data.data._id}`)
+
+      }else{
+        alert("Someerror")
+      }
+     }
+
+    } catch (error) {
+      console.log(error)
+      
+    }
     // Handle the login logic here
     console.log("Login attempted with:", { email, password });
   };
 
+
   return (
-    <div className="login-container d-flex align-items-center justify-content-center min-vh-100">
+    <div className="login-container d-flex align-items-center justify-content-center min-vh-100">   
       <div className="card login-card w-100" style={{ maxWidth: "28rem" }}>
         <div className="card-header text-center">
           <h2 className="login-title">Login to SportsQuest</h2>

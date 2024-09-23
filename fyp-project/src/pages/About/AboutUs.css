@@ -1,0 +1,165 @@
+/* General Page Styles */
+.aboutus-bg {
+  background-color: #f9f9f9;
+  padding: 60px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Typography */
+h1.display-4 {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+h2.h4 {
+  font-weight: bold;
+  color: #444;
+}
+
+p.text-muted {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+/* Spacing and Layout */
+.row {
+  margin-bottom: 40px;
+}
+
+.section {
+  margin-bottom: 60px;
+}
+
+.col-md-6 {
+  margin-bottom: 20px;
+}
+
+ul.list-unstyled li {
+  font-size: 1.1rem;
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+ul.list-unstyled li::before {
+  content: '•';
+  color: #007bff;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+/* Image Styling */
+img.img-fluid {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  object-fit: cover;
+}
+
+img.img-fluid:hover {
+  transform: scale(1.05);
+}
+
+/* Social Media Icons */
+.d-flex a {
+  display: inline-block;
+  transition: transform 0.3s, background-color 0.3s ease;
+}
+
+.d-flex a:hover {
+  transform: translateY(-5px);
+}
+
+.d-flex a.text-danger:hover {
+  color: #e53935;
+}
+
+.d-flex a.text-primary:hover {
+  color: #3b5998;
+}
+
+.d-flex a.text-success:hover {
+  color: #25d366;
+}
+
+.d-flex a.text-info:hover {
+  color: #0077b5;
+}
+
+.d-flex a.text-dark:hover {
+  color: #1da1f2;
+}
+
+/* Meet Our Team */
+img.rounded-circle {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+img.rounded-circle:hover {
+  transform: scale(1.1);
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.p-4 {
+  padding: 40px;
+}
+
+.shadow {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.mb-4 {
+  margin-bottom: 30px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Section Titles */
+h2.h4::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 4px;
+  background-color: #007bff;
+  margin-top: 10px;
+}
+
+/* Footer Call-to-Action Section */
+h2.text-warning {
+  color: #ffc107 !important;
+}
+
+p.text-muted {
+  font-size: 1.1rem;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .col-md-6 {
+    text-align: center;
+  }
+
+  img.img-fluid {
+    width: 100%;
+    height: auto;
+  }
+
+  img.rounded-circle {
+    margin-bottom: 20px;
+  }
+}
