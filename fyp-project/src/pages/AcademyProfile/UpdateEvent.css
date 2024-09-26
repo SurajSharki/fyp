@@ -1,0 +1,90 @@
+.event-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .event-row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .event-col {
+    width: 100%;
+  }
+  
+  .event-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .event-card-title {
+    background-color: #343a40;
+    color: white;
+    padding: 10px;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .event-card-body {
+    padding: 20px;
+  }
+  
+  .event-form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .event-form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .event-form-control,
+  .event-form-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .event-form-control:focus,
+  .event-form-select:focus {
+    border-color: #343a40;
+    outline: none;
+  }
+  
+  .event-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .event-btn-success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .event-btn-success:hover {
+    background-color: #218838;
+  }
+  
+  .event-btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .event-btn-danger:hover {
+    background-color: #c82333;
+  }
+  

@@ -6,8 +6,8 @@ const Navbar = () => {
   const [menu, setMenu] = useState("home");
 
   return (
-    <div className='navbar'>
-      <Link to="/">
+    <nav className='navbar'>
+      <Link to="/" className="navbar-logo">
         <img src="./logo.png" alt="Logo" className="logo" />
       </Link>
       <ul className="navbar-menu">
@@ -21,21 +21,24 @@ const Navbar = () => {
           <Link to="/about">About</Link>
         </li>
         <li onClick={() => setMenu("events")} className={menu === "events" ? "active" : ""}>
-          <Link to="/events">Events</Link> {/* Make sure to define this route in App.js */}
+          <Link to="/events">Events</Link>
         </li>
         <li onClick={() => setMenu("contact-us")} className={menu === "contact-us" ? "active" : ""}>
-          <Link to="/contact-us">Contact Us</Link> {/* Make sure to define this route in App.js */}
+          <Link to="/contact-us">Contact Us</Link>
         </li>
       </ul>
       <div className="navbar-right">
-        <div className="navbar-search-icon">
-          <div className="dot"></div>
+        <div className="navbar-search">
+          <i className="bi bi-search"></i> {/* Bootstrap icon for search */}
         </div>
         <Link to="/login">
-          <button>Sign In</button>
+          <button className="btn-signin">Sign In</button>
         </Link>
       </div>
-    </div>
+      <div className="navbar-toggle" onClick={() => setMenu(menu === "expanded" ? "home" : "expanded")}>
+        <i className="bi bi-list"></i> {/* Bootstrap icon for hamburger menu */}
+      </div>
+    </nav>
   );
 }
 

@@ -1,132 +1,123 @@
 import {useState} from "react";
+import './UpdateEvent.css'
 
 const UpdateEvent = () => {
-    const [eventInfo, setEvent] = useState()
+    const [eventInfo, setEvent] = useState();
+    
   return (
    <>
-   <div className="container mt-3">
-   <div className="row">
-        <div className="col-md-8 col-12 mx-auto">
+   <div className="event-container mt-3">
+     <div className="event-row">
+        <div className="event-col mx-auto">
       
-     <div className="card">
-     <h3 className="card-title text-center">Update Event</h3>
-        <div className="card-body">
+     <div className="event-card">
+       <h3 className="event-card-title text-center">Update Event</h3>
+        <div className="event-card-body">
              <form>
-                <div className="form-group">
-                    <label className="form-label">Event Name</label>
+                <div className="event-form-group">
+                    <label className="event-form-label">Event Name</label>
                     <input
                     type="text"
-                    className="form-control"
+                    className="event-form-control"
                     onChange={(e)=>{
-                        setEvent({...eventInfo, eventName: e.target.value})
+                        setEvent({...eventInfo, eventName: e.target.value});
                     }}
-                    style={{border:"1px solid black"}}
                     ></input>
                 </div>
-                <div className="form-group">
-                    <label className="form-label">Organized By</label>
-                    <input
-                    type="text"
-                    className="form-control"
-                    onChange={(e)=>{
-                        setEvent({...eventInfo, organized: e.target.value})
-                    }}
-                    style={{border:"1px solid black"}}
-                    ></input>
-                </div>
-                <div className="form-group">
-                    <label className="form-label">Age Category</label>
-                    <input
-                    type="text"
-                    className="form-control"
-                    onChange={(e)=>{
-                        setEvent({...eventInfo, ageCategory: e.target.value})
-                    }}
-                    style={{border:"1px solid black"}}
-                    ></input>
 
+                <div className="event-form-group">
+                    <label className="event-form-label">Organized By</label>
+                    <input
+                    type="text"
+                    className="event-form-control"
+                    onChange={(e)=>{
+                        setEvent({...eventInfo, organized: e.target.value});
+                    }}
+                    ></input>
                 </div>
-                <div className="form-group">
-                    <label className="form-label">Event Description</label>
+
+                <div className="event-form-group">
+                    <label className="event-form-label">Age Category</label>
+                    <input
+                    type="text"
+                    className="event-form-control"
+                    onChange={(e)=>{
+                        setEvent({...eventInfo, ageCategory: e.target.value});
+                    }}
+                    ></input>
+                </div>
+
+                <div className="event-form-group">
+                    <label className="event-form-label">Event Description</label>
                     <textarea
                     type="text"
-                    className="form-control"
+                    className="event-form-control"
                     onChange={(e)=>{
-                        setEvent({...eventInfo, eventDesc: e.target.value})
+                        setEvent({...eventInfo, eventDesc: e.target.value});
                     }}
-                    style={{border:"1px solid black"}}
                     ></textarea>
                 </div>
-                <div className="form-group">
-                    <label className="form-label">Game Category</label>
+
+                <div className="event-form-group">
+                    <label className="event-form-label">Game Category</label>
                     <select
-                 
-                    className="form-select"
+                    className="event-form-select"
                     onChange={(e)=>{
-                        setEvent({...eventInfo, games: e.target.value})
+                        setEvent({...eventInfo, games: e.target.value});
                     }}
-                    style={{border:"1px solid black"}}
                     >
-                        <option value = "cricket">Cricket</option>
-                        <option value = "cricket">Cricket</option>
-                        <option value = "cricket">Cricket</option>
-                        <option value = "cricket">Cricket</option>
+                        <option value="cricket">Cricket</option>
+                        <option value="football">Football</option>
+                        <option value="basketball">Basketball</option>
+                        <option value="hockey">Hockey</option>
                     </select>
                 </div>
-                <div className="form-group ">
-                    <label className="form-label">Poster Image</label>
+
+                <div className="event-form-group">
+                    <label className="event-form-label">Poster Image</label>
                     <input
                     type="file"
-                    className="form-control"
+                    className="event-form-control"
                     onChange={(e)=>{
-                        setEvent({...eventInfo, imgName: e.target.files[0]})
+                        setEvent({...eventInfo, imgName: e.target.files[0]});
                     }}
-                    style={{border:"1px solid black"}}
                     ></input>
-                    <div className="form-group">
-                    <label className="form-label">Registration Fee</label>
+                </div>
+
+                <div className="event-form-group">
+                    <label className="event-form-label">Registration Fee</label>
                     <input
                     type="text"
-                    className="form-control"
+                    className="event-form-control"
                     onChange={(e)=>{
-                        setEvent({...eventInfo, registrationFee: e.target.value})
+                        setEvent({...eventInfo, registrationFee: e.target.value});
                     }}
-                    style={{border:"1px solid black"}}
                     ></input>
                 </div>
-                </div>
-                <div className="form-group mb-3">
-                    <label className="form-label">Location</label>
+
+                <div className="event-form-group mb-3">
+                    <label className="event-form-label">Location</label>
                     <input
                     type="text"
-                    className="form-control"
+                    className="event-form-control"
                     onChange={(e)=>{
-                        setEvent({...eventInfo, location: e.target.value})
+                        setEvent({...eventInfo, location: e.target.value});
                     }}
-                    style={{border:"1px solid black"}}
                     ></input>
                 </div>
-              
-                <div className="form-group d-flex justify-content-between ">
-                  <button className="btn btn-success px-5 py-3 " type="submit">Submit</button>
-                  <button className="btn btn-danger px-5 py-3" type="reset">Reset</button>
-                </div>
-                
-                <div className="form-group ">
-                 
+
+                <div className="event-form-group d-flex justify-content-between">
+                  <button className="event-btn event-btn-success" type="submit">Submit</button>
+                  <button className="event-btn event-btn-danger" type="reset">Reset</button>
                 </div>
             </form> 
-     
-
-
         </div>
-
      </div>
         </div>
     </div>
    </div>
    </>
-  )
+  );
 }
 
-export default UpdateEvent
+export default UpdateEvent;

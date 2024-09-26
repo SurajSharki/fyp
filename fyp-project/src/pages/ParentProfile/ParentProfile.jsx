@@ -13,12 +13,12 @@ export default function ParentProfile() {
     profilePicture: profile, // Changed to use the imported profile image
   });
 
-  const [appliedEvents, setAppliedEvents] = useState([
+  const [appliedEvents] = useState([
     { id: 1, name: "Summer Soccer Camp", status: "Applied" },
     { id: 2, name: "Basketball Tournament", status: "Accepted" },
   ]);
 
-  const [interestedAcademies, setInterestedAcademies] = useState([
+  const [interestedAcademies] = useState([
     { id: 1, name: "Elite Soccer Academy" },
     { id: 2, name: "Pro Basketball School" },
   ]);
@@ -61,7 +61,7 @@ export default function ParentProfile() {
             className="logo-image"
           />
           <h2 className="profile-title">Parent Profile</h2>
-          <p className="profile-description">Manage your information and view your activities</p>
+          <p className="profile-description">Manage your information and activities</p>
         </div>
         <div className="profile-body">
           <div className="profile-info">

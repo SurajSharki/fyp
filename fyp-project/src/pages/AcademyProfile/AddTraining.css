@@ -1,0 +1,78 @@
+.training-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .training-row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .training-col {
+    width: 100%;
+  }
+  
+  .training-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .training-card-title {
+    background-color: #343a40;
+    color: white;
+    padding: 10px;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .training-card-body {
+    padding: 20px;
+  }
+  
+  .training-form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .training-form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .training-form-control,
+  .training-form-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .training-form-control:focus,
+  .training-form-select:focus {
+    border-color: #343a40;
+    outline: none;
+  }
+  
+  .training-btn {
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .training-btn:hover {
+    background-color: #c82333;
+  }
+  

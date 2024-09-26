@@ -1,0 +1,16 @@
+.container {
+    background: linear-gradient(to right, #fff3cd, #ffe8d1);
+  }
+  
+  h1 {
+    font-weight: bold;
+  }
+  
+  button {
+    font-size: 1rem;
+  }
+  
+  .min-vh-100 {
+    min-height: 100vh;
+  }
+  

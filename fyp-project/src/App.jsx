@@ -13,6 +13,8 @@ import UpdateEvent from './pages/AcademyProfile/UpdateEvent.jsx';
 import TrainingPage from './pages/Sessions/TrainingPage.jsx';
 import Footer from './components/Footers/Footer.jsx';
 import AboutUs from "./pages/About/AboutUs.jsx";
+import TrainingList from './pages/ExploreAcademy/TrainingList.jsx';
+import SportEventsList from './pages/ExploreAcademy/SportEventList.jsx';
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Route path="/updatevent" element={<UpdateEvent></UpdateEvent>}></Route>
         <Route path="/trainings" element={<TrainingPage></TrainingPage>}></Route>
         <Route path='/About' element={<AboutUs></AboutUs>}></Route>
+        <Route path='/Traininglist' element={<TrainingList></TrainingList>}></Route>
+        <Route path='/Sportevent' element={<SportEventsList></SportEventsList>}></Route>
         
       </Routes>
       <Footer/>
