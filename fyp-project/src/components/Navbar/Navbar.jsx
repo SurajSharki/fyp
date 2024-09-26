@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import { FaSearch } from 'react-icons/fa';
 
 const Navbar = () => {
   const [menu, setMenu] = useState("home");
+  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <nav className='navbar'>
       <Link to="/" className="navbar-logo">
         <img src="./logo.png" alt="Logo" className="logo" />
       </Link>
+      
       <ul className="navbar-menu">
         <li onClick={() => setMenu("home")} className={menu === "home" ? "active" : ""}>
           <Link to="/">Home</Link>
@@ -27,16 +30,26 @@ const Navbar = () => {
           <Link to="/contact-us">Contact Us</Link>
         </li>
       </ul>
+
       <div className="navbar-right">
-        <div className="navbar-search">
-          <i className="bi bi-search"></i> {/* Bootstrap icon for search */}
+        <div className="search-icon-box">
+          <FaSearch 
+            className="search-icon" 
+            onClick={() => setSearchOpen(!searchOpen)} 
+          />
+          {searchOpen && (
+            <div className="search-box">
+              <input 
+                type="text" 
+                className="search-input" 
+                placeholder="Search..." 
+              />
+            </div>
+          )}
         </div>
         <Link to="/login">
-          <button className="btn-signin">Sign In</button>
+          <button className="sign-in-btn">Sign In</button>
         </Link>
-      </div>
-      <div className="navbar-toggle" onClick={() => setMenu(menu === "expanded" ? "home" : "expanded")}>
-        <i className="bi bi-list"></i> {/* Bootstrap icon for hamburger menu */}
       </div>
     </nav>
   );
