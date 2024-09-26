@@ -32,6 +32,10 @@ const academySchema = new mongoose.Schema({
     profilePicture:{
         type:String,
     },
+    created:{
+        type:Date,
+        default:Date.now
+    }
     
 
 })

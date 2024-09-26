@@ -6,17 +6,30 @@ const Academy = require("./Database/Model/Academy")
 const cors = require("cors")
 const jwt= require("jsonwebtoken")
 const cookieparser = require("cookie-parser")
+const multer = require("multer")
 
 const app = express();
 app.use(cookieparser())
 app.use(cors({
     origin:"http://localhost:5173",
-    methods: ["GET", "POST"],
     credentials: true,
 }))
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
+app.use(express.static("./images"))
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './images')
+    },
+    filename: function (req, file, cb) {
+      const ext = file.originalname.split(".")[file.originalname.split(".").length -1]
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, file.fieldname + '-' + uniqueSuffix + "."+ ext)
+    }
+  })
+  
+  const upload = multer({ storage: storage })
 
 app.post("/register", async(req, res)=>{
     try {
@@ -62,15 +75,15 @@ app.post("/login",async(req, res)=>{
             return res.status(401).json({message:"Invalid details"})
         }
         console.log("user Found")
-        const token = jwt.sign({id: loginUser._id, usertype: loginUser.usertype},"dbfjhjasfjhjafhjhjFAHKJHJFHSA",{
+        const token = jwt.sign({id: loginUser._id, usertype: loginUser.usertype},"kuchvimatkahovai",{
             expiresIn: "1h"
         })
 
         res.cookie("token",token,{
-            httpOnly: true,
-            secure: true,
-            sameSite: "None",
-            maxAge: 24*60*60*1000
+            httpOnly: true, // Ensures cookie is not accessible via JavaScript
+            secure: false,  // Set to true if using HTTPS
+            sameSite: "Lax", // Adjust based on your CORS needs
+            maxAge: 3600000 // Cookie expiration time
         })
         console.log(loginUser)
         return res.status(200).json({token, data: loginUser, message:"Logged In", status:"ok" })
@@ -94,13 +107,15 @@ app.post("/login",async(req, res)=>{
 })
 
 app.get("/verfifyAcademy", async(req,res)=>{
-    const token = req.cookies.token;
-    if(!token){
-        return res.status(401).json({message:"Token not available"})
+    console.log("comung ")
+    const tokenn = req.cookies.token;
+    console.log(tokenn)
+    if(!tokenn){
+        return res.json({message:"Token not available", status: "invalid"})
     }
-    jwt.verify(token,"dbfjhjasfjhjafhjhjFAHKJHJFHSA", (err,decoded)=>{
+    jwt.verify(tokenn,"kuchvimatkahovai", (err,decoded)=>{
         if(err){
-            return res.status(401).json({message:"Invalid token"})
+            return res.json({message:"Invalid token", status:"invalid"})
             }
         if(decoded.usertype == "academy"){
             return res.status(200).json({message:"Academy verified", status:"ok", usertype: decoded.usertype})
@@ -109,6 +124,38 @@ app.get("/verfifyAcademy", async(req,res)=>{
         }
     } )
 } )
+
+app.put("/addAcademyProfile/:academyId", upload.fields([{
+    name:"profilePicture",maxCount:1
+}]), async(req,res)=>{
+    try {
+        console.log(req.params.academyId)
+        const profilePicture = req.files.profilePicture ? req.files.profilePicture[0] :null;
+        if(profilePicture){
+            req.body.profilePicture = `http://localhost:8000/${profilePicture.filename}`
+        }
+        const updateAcademy = await Academy.findByIdAndUpdate(
+            req.params.academyId,
+            req.body,
+            {new: true}
+        )
+        return res.status(200).json({success: true, data: updateAcademy})
+    } catch (error) {
+        console.log(error.message)
+    }
+})
+
+
+app.get("/academyInfo/:academyId",async(req,res)=>{
+    try {
+        const academyId = req.params.academyId;
+        const academy = await Academy.findOne({_id: academyId})
+        console.log(academy)
+        res.json({message: "hello", data : academy})
+    } catch (error) {
+        
+    }
+})
 
 app.listen(8000, ()=>{
     console.log("Server is running on port 8000");

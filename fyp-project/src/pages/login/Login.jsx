@@ -11,14 +11,16 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const resp = await axios.post("http://localhost:8000/login", {
+      const resp = await axios.post("http://localhost:8000/login",{
         email,
         password,
+      },{
+        withCredentials: true
       });
       
       if (resp.data.status === "ok") {
         if (resp.data.data.usertype === "student") {
-          navigate("/student");
+          navigate(`/parentprofile/${resp.data.data._id}`);
         } else if (resp.data.data.usertype === "academy") {
           navigate(`/academyprofile/${resp.data.data._id}`);
         } else {
