@@ -1,44 +1,50 @@
-const { default: mongoose } = require("mongoose");
-
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const addEventSchema = new mongoose.Schema({
-    eventName:{
-        type:String,
-        required:true
+  eventName: {
+    type: String,
+    required: true,
+  },
+  organized: {
+    type: String,
+    require: true,
+  },
+  ageCategory: {
+    type: String,
+    require: true,
+  },
+  eventDesc: {
+    type: String,
+    require: true,
+  },
+  game: {
+    type: String,
+    require: true,
+  },
+  imgName: {
+    type: String,
+    require: true,
+  },
+  registrationFee: {
+    type: String,
+    require: true,
+  },
+  location: {
+    type: String,
+    require: true,
+  },
+  addedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Academy",
     },
-    organized:{
-        type:String,
-        require:true
+  ],
+  registered: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    ageCategory:{
-        type:String,
-        require:true
-    },
-    eventDesc:{
-        type:String,
-        require:true 
-    },
-    game:{
-        type:String,
-        require:true
-    },
-    imgName:{
-        type:String,
-        require:true 
-    },
-    registrationFee:{
-        type:String,
-        require:true 
-    },
-    location:{
-        type:String,
-        require:true
-    },
+  ],
+});
 
-
-})
-
-
-
-module.exports = mongoose.model("AddEvent",addEventSchema);
+module.exports = mongoose.model("AddEvent", addEventSchema);

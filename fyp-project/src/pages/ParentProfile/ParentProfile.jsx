@@ -1,17 +1,16 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./ParentProfile.css"; // External CSS
-import profile from '../../assets/coach_one.jpg';
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { ApiContext } from "../../Context";
 
 export default function ParentProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const [parent, setParent] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    address: "123 Sports St, Athleticville, SP 12345",
-    phone: "+1 (555) 123-4567",
-    profilePicture: profile, // Changed to use the imported profile image
-  });
+  const [parent, setParent] = useState({});
+  const [userData, setUserData] = useState();
+  const { userId } = useParams();
+
+  const { getUserInfo } = useContext(ApiContext);
 
   const [appliedEvents] = useState([
     { id: 1, name: "Summer Soccer Camp", status: "Applied" },
@@ -23,71 +22,80 @@ export default function ParentProfile() {
     { id: 2, name: "Pro Basketball School" },
   ]);
 
-  const fileInputRef = useRef(null);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setParent((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Updated profile:", parent);
+    try {
+      const formData = new FormData();
+      for (const key in parent) {
+        if (parent[key] !== null && parent[key] !== "") {
+          formData.append(key, parent[key]);
+        }
+      }
+      const resp = axios.put(
+        `http://localhost:8000/updateUser/${userId}`,
+        formData
+      );
+
+      console.log(resp);
+      getUserData();
+    } catch (error) {
+      console.log(error);
+    }
     setIsEditing(false);
   };
 
-  const handleImageClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setParent((prev) => ({ ...prev, profilePicture: reader.result }));
-      };
-      reader.readAsDataURL(file);
+  const getUserData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/getUser/${userId}`
+      );
+      console.log(response.data.data);
+      setUserData(response.data.data);
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  const verifyUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/verfifyUser", {
+        withCredentials: true,
+      });
+      console.log(response, "k aricha");
+      if (response.data.status !== "ok") {
+        navigator("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    verifyUser();
+    getUserData();
+    getUserInfo();
+  }, []);
 
   return (
     <div className="profile-container">
       <div className="profile-card">
         <div className="profile-header">
           <img
-            src="./logo.png"
+            src={userData?.profilePicture}
             alt="SportQuest Logo"
             className="logo-image"
           />
-          <h2 className="profile-title">Parent Profile</h2>
-          <p className="profile-description">Manage your information and activities</p>
+          <h2 className="profile-title">User Profile</h2>
+          <p className="profile-description">
+            Manage your information and activities
+          </p>
         </div>
         <div className="profile-body">
           <div className="profile-info">
-            <div className="profile-picture-container">
-              <img
-                src={parent.profilePicture}
-                alt={`${parent.firstName} ${parent.lastName}`}
-                className="profile-picture"
-                onClick={handleImageClick}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleImageChange}
-                accept="image/*"
-                className="file-input"
-              />
-              <button
-                className="camera-button"
-                onClick={handleImageClick}
-              >
-                <i className="bi bi-camera"></i>
-              </button>
-            </div>
-            <h4 className="profile-name">{parent.firstName} {parent.lastName}</h4>
-            <p className="profile-email">{parent.email}</p>
+            <h4 className="profile-name">
+              {userData?.firstName} {userData?.lastName}
+            </h4>
+            <p className="profile-email">{userData?.email}</p>
             {isEditing ? (
               <form onSubmit={handleSubmit} className="edit-form">
                 <div className="form-group">
@@ -96,8 +104,10 @@ export default function ParentProfile() {
                     type="text"
                     id="firstName"
                     name="firstName"
-                    value={parent.firstName}
-                    onChange={handleInputChange}
+                    defaultValue={userData?.firstName}
+                    onChange={(e) => {
+                      setParent({ ...parent, firstName: e.target.value });
+                    }}
                     className="form-control"
                   />
                 </div>
@@ -107,8 +117,10 @@ export default function ParentProfile() {
                     type="text"
                     id="lastName"
                     name="lastName"
-                    value={parent.lastName}
-                    onChange={handleInputChange}
+                    defaultValue={userData?.lastName}
+                    onChange={(e) => {
+                      setParent({ ...parent, lastName: e.target.value });
+                    }}
                     className="form-control"
                   />
                 </div>
@@ -118,20 +130,23 @@ export default function ParentProfile() {
                     type="email"
                     id="email"
                     name="email"
-                    value={parent.email}
-                    onChange={handleInputChange}
+                    disabled
+                    defaultValue={userData?.email}
                     className="form-control"
                   />
                 </div>
                 <div className="form-group">
                   <label htmlFor="address">Address</label>
-                  <textarea
+                  <input
+                    type="text"
                     id="address"
                     name="address"
-                    value={parent.address}
-                    onChange={handleInputChange}
+                    defaultValue={userData?.address}
+                    onChange={(e) => {
+                      setParent({ ...parent, address: e.target.value });
+                    }}
                     className="form-control"
-                  ></textarea>
+                  ></input>
                 </div>
                 <div className="form-group">
                   <label htmlFor="phone">Phone</label>
@@ -139,18 +154,52 @@ export default function ParentProfile() {
                     type="text"
                     id="phone"
                     name="phone"
-                    value={parent.phone}
-                    onChange={handleInputChange}
+                    onChange={(e) => {
+                      setParent({ ...parent, phone: e.target.value });
+                    }}
+                    defaultValue={userData?.phone}
                     className="form-control"
                   />
                 </div>
-                <button type="submit" className="save-button">Save Changes</button>
+                <div className="form-group">
+                  <label htmlFor="profilePicture">Profile Picture</label>
+                  <input
+                    type="file"
+                    id="profilePicture"
+                    name="profilePicture"
+                    onChange={(e) => {
+                      setParent({
+                        ...parent,
+                        profilePicture: e.target.files[0],
+                      });
+                    }}
+                    className="form-control"
+                  />
+                </div>
+                <button type="submit" className="save-button">
+                  Save Changes
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </button>
               </form>
             ) : (
               <div className="profile-summary">
-                <p><strong>Address:</strong> {parent.address}</p>
-                <p><strong>Phone:</strong> {parent.phone}</p>
-                <button onClick={() => setIsEditing(true)} className="edit-button">Edit Profile</button>
+                <p>
+                  <strong>Address:</strong> {userData?.address}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {userData?.phone}
+                </p>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="edit-button"
+                >
+                  Edit Profile
+                </button>
               </div>
             )}
           </div>
@@ -158,10 +207,16 @@ export default function ParentProfile() {
             <div className="events-section">
               <h3 className="section-title">Applied Events</h3>
               <ul className="list-group">
-                {appliedEvents.map(event => (
+                {appliedEvents.map((event) => (
                   <li key={event.id} className="list-group-item">
                     {event.name}
-                    <span className={`badge ${event.status === "Accepted" ? "badge-success" : "badge-secondary"}`}>
+                    <span
+                      className={`badge ${
+                        event.status === "Accepted"
+                          ? "badge-success"
+                          : "badge-secondary"
+                      }`}
+                    >
                       {event.status}
                     </span>
                   </li>
@@ -171,7 +226,7 @@ export default function ParentProfile() {
             <div className="academies-section">
               <h3 className="section-title">Interested Academies</h3>
               <ul className="list-group">
-                {interestedAcademies.map(academy => (
+                {interestedAcademies.map((academy) => (
                   <li key={academy.id} className="list-group-item">
                     {academy.name}
                     <span className="badge badge-primary">Interested</span>
