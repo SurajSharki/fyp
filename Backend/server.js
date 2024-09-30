@@ -574,6 +574,30 @@ app.get("/academydetails/:academyId", async (req, res) => {
   }
 });
 
+//list of users applied in specific event
+app.get("/appliedUsers/:eventId", async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const users = await Event.findById(eventId).populate("registered");
+    console.log(users);
+    res.json({ message: "hello", data: users });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+//list of users applied in specific training
+app.get("/appliedUsers/:trainingId", async (req, res) => {
+  try {
+    const trainingId = req.params.trainingId;
+    const users = await AddTraining.findById(trainingId).populate("registered");
+    console.log(users);
+    res.json({ message: "hello", data: users });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 // logout all the users
 app.get("/logout", (req, res) => {
   res.clearCookie("token");
