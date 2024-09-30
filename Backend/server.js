@@ -311,25 +311,35 @@ app.post(
 app.put("/applyEvent/:eventId", async (req, res) => {
   try {
     const eventId = req.params.eventId;
-    console.log(req.body);
-    const userId = req.userId;
+    const userId = req.body.userId;
+    console.log(userId);
     const event = await Event.findOne({ _id: eventId });
-    if (event) {
-      if (event.registered.includes(userId)) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Already Applied" });
-      }
-    }
-    if (event) {
-      event.registered.push(userId);
-      await event.save();
+
+    if (!event) {
       return res
-        .status(200)
-        .json({ success: true, message: "Applied Successfully" });
+        .status(404)
+        .json({ success: false, message: "Event not found" });
     }
+
+    // Filter out any null values from the registered array
+    event.registered = event.registered.filter((id) => id !== null);
+
+    if (event.registered.includes(userId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Already Applied" });
+    }
+
+    event.registered.push(userId);
+    console.log(event);
+    await event.save();
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Applied Successfully" });
   } catch (error) {
     console.log(error.message);
+    return res.status(500).json({ success: false, message: "Server Error" });
   }
 });
 
@@ -338,7 +348,7 @@ app.put("/applyTraining/:trainingId", async (req, res) => {
   try {
     const trainingId = req.params.trainingId;
     console.log(req.body);
-    const userId = req.userId;
+    const userId = req.body.userId;
     const training = await AddTraining.findOne({ _id: trainingId });
     if (training) {
       if (training.registered.includes(userId)) {
@@ -354,6 +364,211 @@ app.put("/applyTraining/:trainingId", async (req, res) => {
         .status(200)
         .json({ success: true, message: "Applied Successfully" });
     }
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/getEvent/:eventId", async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const event = await Event.findOne({ _id: eventId });
+    console.log(event);
+    res.json({ message: "hello", data: event });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/getTraining/:trainingId", async (req, res) => {
+  try {
+    const trainingId = req.params.trainingId;
+    const training = await AddTraining.findOne({ _id: trainingId });
+    console.log(training);
+    res.json({ message: "hello", data: training });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.put("/updateEvent/:eventId", upload.single("imgName"), async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+
+    const event = await Event.findById(eventId);
+    const imgName = req.file
+      ? `http://localhost:8000/${req.file.filename}`
+      : event.imgName;
+    const updateEvent = await Event.findByIdAndUpdate(
+      eventId,
+      {
+        ...req.body,
+        imgName,
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      data: updateEvent,
+      message: "Event Updated Successfully",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.put(
+  "/updateTraining/:trainingId",
+  upload.single("imgName"),
+  async (req, res) => {
+    try {
+      const trainingId = req.params.trainingId;
+
+      const training = await AddTraining.findById(trainingId);
+      const imgName = req.file
+        ? `http://localhost:8000/${req.file.filename}`
+        : training.imgName;
+      const updateTraining = await AddTraining.findByIdAndUpdate(
+        trainingId,
+        {
+          ...req.body,
+          imgName,
+        },
+        { new: true }
+      );
+      return res.status(200).json({
+        success: true,
+        data: updateTraining,
+        message: "Training Updated Successfully",
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+);
+
+app.delete("/deleteEvent/:eventId", async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const event = await Event.findByIdAndDelete(eventId);
+    console.log(event);
+    return res.status(200).json({
+      success: true,
+      message: "Event Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.delete("/deleteTraining/:trainingId", async (req, res) => {
+  try {
+    const trainingId = req.params.trainingId;
+    const training = await AddTraining.findByIdAndDelete(trainingId);
+    console.log(training);
+    return res.status(200).json({
+      success: true,
+      message: "Training Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+//get events added by specific academy
+app.get("/getAcademyEvents/:academyId", async (req, res) => {
+  try {
+    const academyId = req.params.academyId;
+    const events = await Event.find({ addedBy: academyId });
+    res.json({ message: "hello", data: events });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+//get trainings added by specific academy
+app.get("/getAcademyTrainings/:academyId", async (req, res) => {
+  try {
+    const academyId = req.params.academyId;
+    const trainings = await AddTraining.find({ addedBy: academyId });
+    res.json({ message: "hello", data: trainings });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/appliedEvent/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const events = await Event.find({ registered: userId });
+    res.json({ message: "hello", data: events });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/appliedTraining/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const trainings = await AddTraining.find({ registered: userId });
+    res.json({ message: "hello", data: trainings });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/allEvents", async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.json({ message: "hello", data: events });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/eventdetails/:eventId", async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const event = await Event.findById(eventId);
+    res.json({ message: "hello", data: event });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/allTrainings", async (req, res) => {
+  try {
+    const trainings = await AddTraining.find();
+    res.json({ message: "hello", data: trainings });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/trainingdetails/:trainingId", async (req, res) => {
+  try {
+    const trainingId = req.params.trainingId;
+    const training = await AddTraining.findById(trainingId);
+    res.json({ message: "hello", data: training });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/allAcademies", async (req, res) => {
+  try {
+    const academies = await Academy.find();
+    res.json({ message: "hello", data: academies });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/academydetails/:academyId", async (req, res) => {
+  try {
+    const academyId = req.params.academyId;
+    const academy = await Academy.findById(academyId);
+    res.json({ message: "hello", data: academy });
   } catch (error) {
     console.log(error.message);
   }
