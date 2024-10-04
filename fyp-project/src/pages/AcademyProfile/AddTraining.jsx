@@ -20,6 +20,7 @@ const AddTraining = () => {
       navigator("/login");
     }
   };
+  //dhjjhgjkshjkghjksgk
 
   const handleSubmit = async (e) => {
     e.preventDefault();
