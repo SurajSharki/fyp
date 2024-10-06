@@ -235,12 +235,17 @@ const AcademyProfile = () => {
             </div>
             <div className="academy-btn-group">
               <Link
-                to="/traininglist"
+                to={`/traininglist/${academyId}`}
                 className="academy-btn-success text-decoration-none"
               >
                 Training Sessions
               </Link>
-              <button className="academy-btn-primary">Events</button>
+              <Link
+                to={`/eventlist/${academyId}`}
+                className="academy-btn-primary"
+              >
+                Events
+              </Link>
             </div>
           </div>
         </div>

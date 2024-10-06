@@ -1,0 +1,21 @@
+.card-header {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.card-body ul li svg {
+  width: 16px;
+  height: 16px;
+}
+
+.card-body .badge {
+  margin-top: 1rem;
+}
+
+.card-footer .btn {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.card-footer .btn:hover {
+  background-color: #004085;
+}

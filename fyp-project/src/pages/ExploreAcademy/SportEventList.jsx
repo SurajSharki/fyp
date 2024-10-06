@@ -2,12 +2,58 @@
 import { Trophy } from "lucide-react";
 import "./SportsEventsList.css";
 
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+
 export default function SportEventsList() {
-  const events = [
-    { id: 1, name: "City Marathon", location: "Downtown", fee: 50, attendees: 1000 },
-    { id: 2, name: "Regional Tennis Tournament", location: "Tennis Center", fee: 75, attendees: 128 },
-    { id: 3, name: "Charity Golf Open", location: "Greenview Golf Club", fee: 100, attendees: 72 },
-  ];
+  const navigator = useNavigate();
+
+  const { academyId } = useParams();
+
+  const [events, setEvents] = useState();
+
+  const getEvents = async () => {
+    try {
+      const req = await axios.get(
+        `http://localhost:8000/getAcademyEvents/${academyId}`
+      );
+      console.log(req.data.data);
+      setEvents(req.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (eventId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/deleteEvent/${eventId}`
+      );
+      console.log(response);
+      getEvents();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const verifyAcademy = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/verfifyAcademy", {
+        withCredentials: true,
+      });
+      console.log(response, "k aricha");
+      if (response.data.status !== "ok") {
+        navigator("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    verifyAcademy();
+    getEvents();
+  }, []);
 
   return (
     <div className="container p-5 min-vh-100 bg-light">
@@ -16,7 +62,9 @@ export default function SportEventsList() {
         Sports Events List
       </h1>
       <div className="d-flex justify-content-end mb-4">
-        <button className="btn btn-primary">Add Sports Event</button>
+        <Link to={`/addevent/${academyId}`} className="btn btn-primary">
+          Add Sports Event
+        </Link>
       </div>
       <table className="table table-striped">
         <thead className="table-dark">
@@ -32,17 +80,34 @@ export default function SportEventsList() {
         </thead>
         <tbody>
           {events.map((event, index) => (
-            <tr key={event.id}>
+            <tr key={event._id}>
               <th scope="row">{index + 1}</th>
-              <td>{event.name}</td>
+              <td>{event?.eventName}</td>
               <td>
-                <button className="btn btn-outline-secondary btn-sm">View</button>
+                <button className="btn btn-outline-secondary btn-sm">
+                  View
+                </button>
               </td>
-              <td>{event.location}</td>
-              <td>${event.fee}</td>
-              <td>{event.attendees}</td>
+              <td>{event?.location}</td>
+              <td>${event?.registrationFee}</td>
               <td>
-                <button className="btn btn-danger btn-sm">Delete</button>
+                {event?.registered.length > 0 ? event?.registered.length : 0}
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleDelete(event._id)}
+                >
+                  Delete
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => navigator(`/updateevent/${event._id}`)}
+                >
+                  Edit
+                </button>
               </td>
             </tr>
           ))}
