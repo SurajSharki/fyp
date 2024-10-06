@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function TrainingList() {
   const { academyId } = useParams();
+  console.log("AcademyId", academyId)
   const [trainings, setTrainingList] = useState();
   const navigator = useNavigate();
 
@@ -71,11 +72,12 @@ export default function TrainingList() {
             <th scope="col">Location</th>
             <th scope="col">Register Fee</th>
             <th scope="col">Registered Athletes</th>
+            <th scope="col">Fee</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {trainings.map((training, index) => (
+          {trainings?.map((training, index) => (
             <tr key={training._id}>
               <th scope="row">{index + 1}</th>
               <td>{training?.sessionName}</td>
@@ -86,16 +88,16 @@ export default function TrainingList() {
               <td>{training?.coachName}</td>
               <td>{training?.experience}</td>
               <td>{training?.cost}</td>
-              <td>
+              <td className="d-flex justify-content-between">
                 <button
                   className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(training.id)}
+                  onClick={() => handleDelete(training._id)}
                 >
                   Delete
                 </button>
                 <button
                   className="btn btn-success btn-sm"
-                  onClick={() => navigator(`updatetraining/${training.id}`)}
+                  onClick={() => navigator(`/updatetraining/${training._id}`)}
                 >
                   Edit
                 </button>

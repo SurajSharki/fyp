@@ -8,20 +8,34 @@ export default function ParentProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const [parent, setParent] = useState({});
   const [userData, setUserData] = useState();
+  const [appliedEvents, setAppliedEvents] = useState()
+  const[appliedTraining, setAppliedTraning] = useState();
   const { userId } = useParams();
 
   const { getUserInfo } = useContext(ApiContext);
 
-  const [appliedEvents] = useState([
-    { id: 1, name: "Summer Soccer Camp", status: "Applied" },
-    { id: 2, name: "Basketball Tournament", status: "Accepted" },
-  ]);
+  
 
-  const [interestedAcademies] = useState([
-    { id: 1, name: "Elite Soccer Academy" },
-    { id: 2, name: "Pro Basketball School" },
-  ]);
 
+
+  const getAppliedEvents = async()=>{
+    try {
+      const resp = await axios.get(`http://localhost:8000/appliedEvent/${userId}`)
+      setAppliedEvents(resp.data.data)
+    } catch (error) {
+      console.error(error)
+      
+    }
+  }
+  
+  const getAppliedTraining = async ()=>{
+    try {
+      const resp = await axios.get(`http://localhost:8000/appliedTraining/${userId}`)
+      setAppliedTraning(resp.data.data)
+    } catch (error) {
+      
+    }
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -74,6 +88,8 @@ export default function ParentProfile() {
     verifyUser();
     getUserData();
     getUserInfo();
+    getAppliedEvents()
+    getAppliedTraining()
   }, []);
 
   return (
@@ -207,31 +223,57 @@ export default function ParentProfile() {
             <div className="events-section">
               <h3 className="section-title">Applied Events</h3>
               <ul className="list-group">
-                {appliedEvents.map((event) => (
-                  <li key={event.id} className="list-group-item">
-                    {event.name}
+                {
+                  appliedEvents?.length > 0 ? appliedEvents?.map((event) => (
+                    <li key={event?._id} className="list-group-item">
+                      {event?.eventName}
+                      <span
+                        className={`badge ${
+                          event?.eventName &&
+                            "badge-success"
+                           
+                        }`}
+                      >
+                        {event?.eventName}
+                      </span>
+                    </li>
+                  )): <p>There is no events</p>
+                }
+                {/* {appliedEvents?.map((event) => (
+                  <li key={event._id} className="list-group-item">
+                    {event.eventName}
                     <span
                       className={`badge ${
-                        event.status === "Accepted"
-                          ? "badge-success"
-                          : "badge-secondary"
+                        event.eventName &&
+                          "badge-success"
+                         
                       }`}
                     >
-                      {event.status}
+                      {event?.eventName}
                     </span>
                   </li>
-                ))}
+                ))} */}
               </ul>
             </div>
             <div className="academies-section">
               <h3 className="section-title">Interested Academies</h3>
               <ul className="list-group">
-                {interestedAcademies.map((academy) => (
-                  <li key={academy.id} className="list-group-item">
-                    {academy.name}
-                    <span className="badge badge-primary">Interested</span>
-                  </li>
-                ))}
+              {
+                  appliedTraining?.length > 0 ? appliedTraining?.map((event) => (
+                    <li key={event?._id} className="list-group-item">
+                      {event?.sessionName}
+                      <span
+                        className={`badge ${
+                          event?.sessionName &&
+                            "badge-success"
+                           
+                        }`}
+                      >
+                        {event?.sessionName}
+                      </span>
+                    </li>
+                  )): <p>There is no training</p>
+                }
               </ul>
             </div>
           </div>

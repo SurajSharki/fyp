@@ -11,17 +11,17 @@ export default function TrainingSessionCard({ trainings }) {
         style={{ height: "12rem", objectFit: "cover" }}
       />
       <div className="card-header">
-        <h2 className="h5 card-title mb-1">{trainings?.sessionName}</h2>
+        <h2 className="h5 card-title mb-1 text-black">{trainings?.sessionName}</h2>
         <div className="d-flex align-items-center mt-2">
-          <div className="avatar me-2">
+          {/* <div className="avatar me-2">
             <img
               src="/placeholder.svg?height=24&width=24"
               alt="Instructor"
               className="rounded-circle"
               style={{ width: "24px", height: "24px" }}
             />
-          </div>
-          <span className="text-muted small">
+          </div> */}
+          <span className="text-black">
             Conducted by {trainings?.coachName}
           </span>
         </div>

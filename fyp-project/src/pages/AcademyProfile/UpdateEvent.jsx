@@ -15,16 +15,16 @@ const UpdateEvent = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      for (const key in eventInfo) {
-        if (eventInfo[key] !== null && eventInfo[key] !== "") {
-          formData.append(key, eventInfo[key]);
+      for (const key in updateValue) {
+        if (updateValue[key] !== null && updateValue[key] !== "") {
+          formData.append(key, updateValue[key]);
         }
       }
       const response = await axios.put(
         `http://localhost:8000/updateEvent/${eventId}`,
         formData
       );
-      console.log(response);
+      alert(response.data.message)
       if (response.data.success === true) {
         alert("Event Updated");
       }

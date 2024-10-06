@@ -8,7 +8,7 @@ import axios from "axios";
 const Navbar = () => {
   const [menu, setMenu] = useState("home");
   const [searchOpen, setSearchOpen] = useState(false);
-  const { getUserInfo, loggedIn } = useContext(ApiContext);
+  const { getUserInfo, loggedIn, userType, userId } = useContext(ApiContext);
 
   const navigator = useNavigate();
   const handleClick = async () => {
@@ -44,7 +44,7 @@ const Navbar = () => {
           onClick={() => setMenu("academy")}
           className={menu === "academy" ? "active" : ""}
         >
-          <Link to="/academyprofile">Academy</Link>
+          <Link to="/academylist">Academy</Link>
         </li>
         <li
           onClick={() => setMenu("about")}
@@ -56,15 +56,26 @@ const Navbar = () => {
           onClick={() => setMenu("events")}
           className={menu === "events" ? "active" : ""}
         >
-          <Link to="/events">Events</Link>
+          <Link to="/eventpage">Events</Link>
         </li>
+        <li onClick={() => setMenu("training")}
+          className={menu === "training" ? "active" : ""}></li>
+          <Link to="/trainingpage">Sessions</Link>
         <li
           onClick={() => setMenu("contact-us")}
           className={menu === "contact-us" ? "active" : ""}
         >
           <Link to="/contact-us">Contact Us</Link>
         </li>
+        {
+        loggedIn ? <li>
+          {
+            userType == "student" ? <Link to={`/parentprofile/${userId}`}>Profile</Link> : userType == "academy"? <Link to={`/academyprofile/${userId}`}>Profile</Link> : null
+          }
+        </li> : null
+       }
       </ul>
+     
 
       <div className="navbar-right">
         <div className="search-icon-box">

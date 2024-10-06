@@ -109,6 +109,7 @@ export default function HomeTwo() {
                   <img
                     src={sport.image}
                     className="card-img-top"
+                    style={{height:"300px", width:"100%", objectFit:"cover"}}
                     alt={`${sport.name} Academy`}
                   />
                   <div className="card-body text-center">

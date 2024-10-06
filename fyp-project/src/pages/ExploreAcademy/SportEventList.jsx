@@ -75,11 +75,12 @@ export default function SportEventsList() {
             <th scope="col">Location</th>
             <th scope="col">Register Fee</th>
             <th scope="col">Registered Participants</th>
+        
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {events.map((event, index) => (
+          {events?.map((event, index) => (
             <tr key={event._id}>
               <th scope="row">{index + 1}</th>
               <td>{event?.eventName}</td>
@@ -93,15 +94,14 @@ export default function SportEventsList() {
               <td>
                 {event?.registered.length > 0 ? event?.registered.length : 0}
               </td>
-              <td>
+              <td className="d-flex justify-content-between">
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => handleDelete(event._id)}
                 >
                   Delete
                 </button>
-              </td>
-              <td>
+              
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => navigator(`/updateevent/${event._id}`)}

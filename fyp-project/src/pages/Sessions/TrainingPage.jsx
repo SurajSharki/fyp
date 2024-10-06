@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { SearchIcon } from "lucide-react";
 import TrainingSessionCard from "../../components/TrainingSessionCard";
+import axios from "axios";
 const TrainingPage = () => {
   const [searchTerm, setSearchTerm] = useState();
-  const [trainings, setTrainings] = useState([]);
+  const [trainings, setTrainings] = useState();
   const fetchTrainings = async () => {
     try {
       const response = await axios.get("http://localhost:8000/allTrainings");
-      console.log(response.data);
+      console.log(response.data.data);
       setTrainings(response.data.data);
     } catch (error) {
       console.log(error);
@@ -42,11 +43,11 @@ const TrainingPage = () => {
           </div>
         </div>
         <div className="row">
-          {trainings.map((training, index) => {
+          {trainings?.map((training, index) => {
             return (
               <div className="col-lg-4 col-md-6 col-12" key={index}>
                 <TrainingSessionCard
-                  trainings={trainings}
+                  trainings={training}
                 ></TrainingSessionCard>
               </div>
             );

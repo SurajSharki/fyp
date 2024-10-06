@@ -373,7 +373,7 @@ app.get("/getEvent/:eventId", async (req, res) => {
   try {
     const eventId = req.params.eventId;
     const event = await Event.findOne({ _id: eventId });
-    console.log(event);
+    // console.log(event);
     res.json({ message: "hello", data: event });
   } catch (error) {
     console.log(error);
@@ -382,6 +382,7 @@ app.get("/getEvent/:eventId", async (req, res) => {
 
 app.get("/getTraining/:trainingId", async (req, res) => {
   try {
+    console.log("hello")
     const trainingId = req.params.trainingId;
     const training = await AddTraining.findOne({ _id: trainingId });
     console.log(training);
@@ -394,26 +395,56 @@ app.get("/getTraining/:trainingId", async (req, res) => {
 app.put("/updateEvent/:eventId", upload.single("imgName"), async (req, res) => {
   try {
     const eventId = req.params.eventId;
+    console.log("data from the body", req.body)
 
+    // Check if the event exists
     const event = await Event.findById(eventId);
+    console.log(event)
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+      
+    // Preserve the existing image name if no new image is uploaded
     const imgName = req.file
       ? `http://localhost:8000/${req.file.filename}`
       : event.imgName;
+
+    // Destructure the request body, excluding 'registered'
+    const { registered, ...restOfBody } = req.body;
+    console.log("-----------------------------------------------")
+    console.log(req.body)
+    // Update the event, ensuring 'registered' is not updated
     const updateEvent = await Event.findByIdAndUpdate(
       eventId,
       {
-        ...req.body,
-        imgName,
+        ...restOfBody, // Update other fields
+        imgName,       // Set the image name
       },
-      { new: true }
+      { new: true }    // Return the updated document
     );
+
+    if (!updateEvent) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to update the event",
+      });
+    }
+
     return res.status(200).json({
       success: true,
       data: updateEvent,
       message: "Event Updated Successfully",
     });
   } catch (error) {
-    console.log(error.message);
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the event",
+      error: error.message,
+    });
   }
 });
 
@@ -538,6 +569,7 @@ app.get("/eventdetails/:eventId", async (req, res) => {
 
 app.get("/allTrainings", async (req, res) => {
   try {
+    console.log("I came here ----")
     const trainings = await AddTraining.find();
     res.json({ message: "hello", data: trainings });
   } catch (error) {

@@ -7,6 +7,18 @@ const UpdateTraining = () => {
   const [updateValue, setUpdateValue] = useState();
   const { trainingId } = useParams();
 
+  const getTrainingInfo  = async()=>{
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/getTraining/${trainingId}`
+      );
+      console.log(response.data);
+      setTrainingSessions(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const navigator = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -45,6 +57,7 @@ const UpdateTraining = () => {
   };
   useEffect(() => {
     verifyAcademy();
+    getTrainingInfo()
   }, []);
   return (
     <>
