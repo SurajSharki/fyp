@@ -85,12 +85,12 @@ export default function SportEventsList() {
               <th scope="row">{index + 1}</th>
               <td>{event?.eventName}</td>
               <td>
-                <button className="btn btn-outline-secondary btn-sm">
+                <Link to={`/eventapplicants/${event?._id}`} className="btn btn-outline-secondary btn-sm">
                   View
-                </button>
+                </Link>
               </td>
               <td>{event?.location}</td>
-              <td>${event?.registrationFee}</td>
+              <td>Rs. {event?.registrationFee}</td>
               <td>
                 {event?.registered.length > 0 ? event?.registered.length : 0}
               </td>

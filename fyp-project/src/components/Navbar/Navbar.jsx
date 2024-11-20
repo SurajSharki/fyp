@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaBars, FaTimes } from "react-icons/fa"; // Icons for hamburger and close
 import { ApiContext } from "../../Context";
 import axios from "axios";
 
 const Navbar = () => {
   const [menu, setMenu] = useState("home");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Track mobile menu state
   const { getUserInfo, loggedIn, userType, userId } = useContext(ApiContext);
 
   const navigator = useNavigate();
+
   const handleClick = async () => {
     try {
       const resp = await axios.get("http://localhost:8000/logout", {
@@ -27,78 +29,54 @@ const Navbar = () => {
   useEffect(() => {
     getUserInfo();
   }, []);
+
   return (
     <nav className="navbar">
       <Link to="/" className="navbar-logo">
         <img src="./logo.png" alt="Logo" className="logo" />
       </Link>
 
-      <ul className="navbar-menu">
-        <li
-          onClick={() => setMenu("home")}
-          className={menu === "home" ? "active" : ""}
-        >
-          <Link to="/">Home</Link>
-        </li>
-        <li
-          onClick={() => setMenu("academy")}
-          className={menu === "academy" ? "active" : ""}
-        >
-          <Link to="/academylist">Academy</Link>
-        </li>
-        <li
-          onClick={() => setMenu("about")}
-          className={menu === "about" ? "active" : ""}
-        >
-          <Link to="/about">About</Link>
-        </li>
-        <li
-          onClick={() => setMenu("events")}
-          className={menu === "events" ? "active" : ""}
-        >
-          <Link to="/eventpage">Events</Link>
-        </li>
-        <li onClick={() => setMenu("training")}
-          className={menu === "training" ? "active" : ""}></li>
-          <Link to="/trainingpage">Sessions</Link>
-        <li
-          onClick={() => setMenu("contact-us")}
-          className={menu === "contact-us" ? "active" : ""}
-        >
-          <Link to="/contact-us">Contact Us</Link>
-        </li>
-        {
-        loggedIn ? <li>
-          {
-            userType == "student" ? <Link to={`/parentprofile/${userId}`}>Profile</Link> : userType == "academy"? <Link to={`/academyprofile/${userId}`}>Profile</Link> : null
-          }
-        </li> : null
-       }
+      {/* Mobile menu toggle */}
+      <div className="mobile-menu-icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        {isMobileMenuOpen ? <FaTimes /> : <FaBars />} {/* Show bars on close and times on open */}
+      </div>
+
+      <ul className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+        {["home", "academylist", "about", "events", "trainings"].map((item) => (
+          <li
+            key={item}
+            onClick={() => {
+              setMenu(item);
+              setIsMobileMenuOpen(false); // Close menu after selection on mobile
+            }}
+            className={menu === item ? "active" : ""}
+          >
+            <Link to={`/${item === "home" ? "" : item}`}>{item.charAt(0).toUpperCase() + item.slice(1)}</Link>
+          </li>
+        ))}
+
+        {loggedIn && (
+          <li>
+            <Link to={userType === "student" ? `/parentprofile/${userId}` : `/academyprofile/${userId}`}>
+              Profile
+            </Link>
+          </li>
+          
+        )}
+        {loggedIn && (
+          <li >
+            <Link to="/chat">
+              GroupChat
+            </Link>
+          </li>
+          
+        )}
       </ul>
-     
 
       <div className="navbar-right">
-        <div className="search-icon-box">
-          <FaSearch
-            className="search-icon"
-            onClick={() => setSearchOpen(!searchOpen)}
-          />
-          {searchOpen && (
-            <div className="search-box">
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Search..."
-              />
-            </div>
-          )}
-        </div>
+       
         {loggedIn ? (
-          <Link to="/parentprofile">
-            <button className="sign-in-btn" onClick={handleClick}>
-              Log Out
-            </button>
-          </Link>
+          <button className="sign-in-btn" onClick={handleClick}>Log Out</button>
         ) : (
           <Link to="/login">
             <button className="sign-in-btn">Sign In</button>

@@ -70,7 +70,7 @@ export default function TrainingList() {
             <th scope="col">Training Name</th>
             <th scope="col">View</th>
             <th scope="col">Location</th>
-            <th scope="col">Register Fee</th>
+            <th scope="col">Coach Name</th>
             <th scope="col">Registered Athletes</th>
             <th scope="col">Fee</th>
             <th scope="col">Action</th>
@@ -82,12 +82,12 @@ export default function TrainingList() {
               <th scope="row">{index + 1}</th>
               <td>{training?.sessionName}</td>
               <td>
-                <button className="btn btn-outline-primary btn-sm">View</button>
+                <Link to={`/trainingapplicants/${training?._id}`} className="btn btn-outline-primary btn-sm">View</Link>
               </td>
               <td>{training?.location}</td>
               <td>{training?.coachName}</td>
-              <td>{training?.experience}</td>
-              <td>{training?.cost}</td>
+              <td>{training?.registered.length > 0 ? training?.registered.length : 0 }</td>
+              <td>Rs. {training?.cost}</td>
               <td className="d-flex justify-content-between">
                 <button
                   className="btn btn-danger btn-sm"

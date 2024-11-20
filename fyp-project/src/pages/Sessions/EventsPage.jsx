@@ -21,8 +21,8 @@ const EventsPage = () => {
   }, []);
   return (
     <>
-      <h1>Explore our Events</h1>
-      <div className="container">
+      <h2 className="mx-4 my-4">Explore our Events</h2>
+      <div className="container-fluid px-5">
         <div className="row">
           {events?.map((event) => (
             <div className="col-md-4" key={event.id}>

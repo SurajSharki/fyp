@@ -1,4 +1,5 @@
 import { Calendar, Clock, MapPin, Users, Trophy } from "lucide-react";
+import { Link } from "react-router-dom";
 import "./EventCard.css";
 
 export default function EventCard({ event }) {
@@ -37,7 +38,7 @@ export default function EventCard({ event }) {
         <span className="badge bg-primary text-light">{event?.game}</span>
       </div>
       <div className="card-footer">
-        <button className="btn btn-primary w-100">Register for Event</button>
+        <Link to={`/events/${event?._id}`} className="btn btn-primary w-100">Register for Event</Link>
       </div>
     </div>
   );

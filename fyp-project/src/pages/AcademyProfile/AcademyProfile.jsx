@@ -182,6 +182,42 @@ const AcademyProfile = () => {
                   </div>
                   <div className="academy-form-group">
                     <label className="academy-form-label">
+                     Facebook Link
+                    </label>
+                    <input
+                      className="academy-form-control"
+                      type="text"
+                      value={  academyInfo.facebookLink !== undefined
+                        ? academyInfo.facebookLink
+                        : academyData?.facebookLink || ""}
+                      onChange={(e) =>
+                        setAcademyInfo({
+                          ...academyInfo,
+                          facebookLink: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="academy-form-group">
+                    <label className="academy-form-label">
+                     Instagram Link
+                    </label>
+                    <input
+                      className="academy-form-control"
+                      type="text"
+                      value={  academyInfo.instagramLink !== undefined
+                        ? academyInfo.instagramLink
+                        : academyData?.instagramLink || ""}
+                      onChange={(e) =>
+                        setAcademyInfo({
+                          ...academyInfo,
+                          instagramLink: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="academy-form-group">
+                    <label className="academy-form-label">
                       Profile Picture
                     </label>
                     <input
@@ -229,7 +265,7 @@ const AcademyProfile = () => {
                   Location: {academyData?.address}
                 </p>
                 <h6 className="academy-joined text-center">
-                  Joined Date:{academyData?.created}{" "}
+                  Joined Date:{academyData?.created?.split("T")[0]}{" "}
                 </h6>
               </div>
             </div>
@@ -242,7 +278,7 @@ const AcademyProfile = () => {
               </Link>
               <Link
                 to={`/eventlist/${academyId}`}
-                className="academy-btn-primary"
+                className="academy-btn-primary text-decoration-none"
               >
                 Events
               </Link>

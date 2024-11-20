@@ -136,11 +136,11 @@ const UpdateEvent = () => {
                     <label className="event-form-label">Game Category</label>
                     <select
                       className="event-form-select"
-                      defaultValue={eventInfo?.games}
+                      defaultValue={eventInfo?.game}
                       onChange={(e) => {
                         setUpdateValue({
                           ...updateValue,
-                          games: e.target.value,
+                          game: e.target.value,
                         });
                       }}
                     >
@@ -164,7 +164,48 @@ const UpdateEvent = () => {
                       }}
                     ></input>
                   </div>
-
+                  <div className="form-group">
+                    <label className="form-label">Time</label>
+                    <input
+                      type="time"
+                      className="form-control form-control-lg"
+                     defaultValue={eventInfo?.time}
+                      onChange={(e) => {
+                        setUpdateValue({
+                          ...updateValue,
+                          time: e.target.value,
+                        });
+                      }}
+                    ></input>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Date</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-lg"
+                      defaultValue={eventInfo?.date}
+                      onChange={(e) => {
+                        setUpdateValue({
+                          ...updateValue,
+                          date: e.target.value,
+                        });
+                      }}
+                    ></input>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Registration Fee</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      defaultValue={eventInfo?.capacity}
+                      onChange={(e) => {
+                        setUpdateValue({
+                          ...updateValue,
+                          capacity: e.target.value,
+                        });
+                      }}
+                    ></input>
+                  </div>
                   <div className="event-form-group">
                     <label className="event-form-label">Registration Fee</label>
                     <input

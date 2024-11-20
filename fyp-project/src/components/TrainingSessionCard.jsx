@@ -8,7 +8,7 @@ export default function TrainingSessionCard({ trainings }) {
         src={trainings?.imgName || "/placeholder.svg?height=200&width=400"}
         alt="Training Session"
         className="card-img-top"
-        style={{ height: "12rem", objectFit: "cover" }}
+        style={{ height: "400px", objectFit: "fill" }}
       />
       <div className="card-header">
         <h2 className="h5 card-title mb-1 text-black">{trainings?.sessionName}</h2>

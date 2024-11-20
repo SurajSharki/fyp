@@ -4,13 +4,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #3a3a3a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
+  flex-wrap: wrap; /* To wrap items for mobile screens */
 }
 
+/* Logo styling */
 .navbar-logo .logo {
   width: 120px;
   cursor: pointer;
@@ -22,7 +24,8 @@
   list-style: none;
   gap: 25px;
   font-size: 16px;
-  color: #343a40;
+  color: #f1f1f1;
+  transition: transform 0.3s ease;
 }
 
 .navbar-menu li {
@@ -36,11 +39,12 @@
 }
 
 .navbar-menu li:hover {
-  color: #007bff;
+  color: #ff4d4d; /* Red color on hover */
 }
 
+/* Active state for menu item */
 .navbar .active {
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid #ff4d4d;
 }
 
 /* Right section */
@@ -57,13 +61,13 @@
 
 .search-icon {
   font-size: 20px;
-  color: #495057;
+  color: #f1f1f1;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .search-icon:hover {
-  color: #007bff;
+  color: #ff4d4d;
 }
 
 .search-box {
@@ -85,13 +89,13 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #ff4d4d;
 }
 
 /* Sign-in button */
 .sign-in-btn {
   padding: 8px 20px;
-  background-color: #007bff;
+  background-color: #ff4d4d;
   color: white;
   border: none;
   border-radius: 20px;
@@ -100,7 +104,19 @@
 }
 
 .sign-in-btn:hover {
-  background-color: #0056b3;
+  background-color: #e60000;
+}
+
+/* Mobile menu icon */
+.mobile-menu-icon {
+  display: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #f1f1f1;
+}
+
+.mobile-menu-icon:hover {
+  color: #ff4d4d;
 }
 
 /* Responsive design */
@@ -108,13 +124,56 @@
   .navbar-menu {
     flex-direction: column;
     display: none;
+    width: 100%;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    background-color: #3a3a3a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-menu.active {
+    display: flex;
+  }
+
+  .navbar-menu li {
+    padding: 15px;
+    text-align: center;
+    width: 100%;
   }
 
   .navbar-right {
     flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+    width: 100%;
   }
-  
+
   .search-box {
-    right: -10px;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 100%;
+  }
+
+  .search-input {
+    width: 90%;
+  }
+
+  /* Show the hamburger icon on small screens */
+  .mobile-menu-icon {
+    display: block;
+  }
+
+  /* Make sign-in button full width on mobile */
+  .sign-in-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo .logo {
+    width: 100px; /* Smaller logo for very small screens */
   }
 }

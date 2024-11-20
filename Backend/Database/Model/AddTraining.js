@@ -45,6 +45,18 @@ const addTrainingSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  time:{
+    type:String,
+    require:true
+  },
+  date:{
+    type:String,
+    require:true
+  },
+  capacity:{
+    type:Number,
+    require:true
+  },
 
   addedBy: [
     {

@@ -8,34 +8,32 @@ export default function ParentProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const [parent, setParent] = useState({});
   const [userData, setUserData] = useState();
-  const [appliedEvents, setAppliedEvents] = useState()
-  const[appliedTraining, setAppliedTraning] = useState();
+  const [appliedEvents, setAppliedEvents] = useState();
+  const [appliedTraining, setAppliedTraining] = useState();
+  const [previewImage, setPreviewImage] = useState(null); // Preview uploaded image
   const { userId } = useParams();
-
   const { getUserInfo } = useContext(ApiContext);
 
-  
+  const randomAvatar = "https://api.dicebear.com/6.x/adventurer/svg"; // Example random avatar URL
 
-
-
-  const getAppliedEvents = async()=>{
+  const getAppliedEvents = async () => {
     try {
-      const resp = await axios.get(`http://localhost:8000/appliedEvent/${userId}`)
-      setAppliedEvents(resp.data.data)
+      const resp = await axios.get(`http://localhost:8000/appliedEvent/${userId}`);
+      setAppliedEvents(resp.data.data);
     } catch (error) {
-      console.error(error)
-      
+      console.error(error);
     }
-  }
-  
-  const getAppliedTraining = async ()=>{
+  };
+
+  const getAppliedTraining = async () => {
     try {
-      const resp = await axios.get(`http://localhost:8000/appliedTraining/${userId}`)
-      setAppliedTraning(resp.data.data)
+      const resp = await axios.get(`http://localhost:8000/appliedTraining/${userId}`);
+      setAppliedTraining(resp.data.data);
     } catch (error) {
-      
+      console.error(error);
     }
-  }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -45,11 +43,7 @@ export default function ParentProfile() {
           formData.append(key, parent[key]);
         }
       }
-      const resp = axios.put(
-        `http://localhost:8000/updateUser/${userId}`,
-        formData
-      );
-
+      const resp = await axios.put(`http://localhost:8000/updateUser/${userId}`, formData);
       console.log(resp);
       getUserData();
     } catch (error) {
@@ -60,11 +54,15 @@ export default function ParentProfile() {
 
   const getUserData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/getUser/${userId}`
-      );
-      console.log(response.data.data);
-      setUserData(response.data.data);
+      const response = await axios.get(`http://localhost:8000/getUser/${userId}`);
+      const user = response.data.data;
+
+      // Set random avatar if no profile picture exists
+      if (!user.profilePicture) {
+        user.profilePicture = randomAvatar;
+      }
+
+      setUserData(user);
     } catch (error) {
       console.log(error);
     }
@@ -72,10 +70,9 @@ export default function ParentProfile() {
 
   const verifyUser = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/verfifyUser", {
+      const response = await axios.get("http://localhost:8000/verifyUser", {
         withCredentials: true,
       });
-      console.log(response, "k aricha");
       if (response.data.status !== "ok") {
         navigator("/login");
       }
@@ -88,8 +85,8 @@ export default function ParentProfile() {
     verifyUser();
     getUserData();
     getUserInfo();
-    getAppliedEvents()
-    getAppliedTraining()
+    getAppliedEvents();
+    getAppliedTraining();
   }, []);
 
   return (
@@ -97,14 +94,12 @@ export default function ParentProfile() {
       <div className="profile-card">
         <div className="profile-header">
           <img
-            src={userData?.profilePicture}
-            alt="SportQuest Logo"
-            className="logo-image"
+            src={previewImage || userData?.profilePicture || randomAvatar}
+            alt="Profile"
+            className="profile-picture"
           />
           <h2 className="profile-title">User Profile</h2>
-          <p className="profile-description">
-            Manage your information and activities
-          </p>
+          <p className="profile-description">Manage your information and activities</p>
         </div>
         <div className="profile-body">
           <div className="profile-info">
@@ -121,9 +116,7 @@ export default function ParentProfile() {
                     id="firstName"
                     name="firstName"
                     defaultValue={userData?.firstName}
-                    onChange={(e) => {
-                      setParent({ ...parent, firstName: e.target.value });
-                    }}
+                    onChange={(e) => setParent({ ...parent, firstName: e.target.value })}
                     className="form-control"
                   />
                 </div>
@@ -134,20 +127,18 @@ export default function ParentProfile() {
                     id="lastName"
                     name="lastName"
                     defaultValue={userData?.lastName}
-                    onChange={(e) => {
-                      setParent({ ...parent, lastName: e.target.value });
-                    }}
+                    onChange={(e) => setParent({ ...parent, lastName: e.target.value })}
                     className="form-control"
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="phone">Phone</label>
                   <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    disabled
-                    defaultValue={userData?.email}
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    defaultValue={userData?.phone}
+                    onChange={(e) => setParent({ ...parent, phone: e.target.value })}
                     className="form-control"
                   />
                 </div>
@@ -158,22 +149,7 @@ export default function ParentProfile() {
                     id="address"
                     name="address"
                     defaultValue={userData?.address}
-                    onChange={(e) => {
-                      setParent({ ...parent, address: e.target.value });
-                    }}
-                    className="form-control"
-                  ></input>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
-                  <input
-                    type="text"
-                    id="phone"
-                    name="phone"
-                    onChange={(e) => {
-                      setParent({ ...parent, phone: e.target.value });
-                    }}
-                    defaultValue={userData?.phone}
+                    onChange={(e) => setParent({ ...parent, address: e.target.value })}
                     className="form-control"
                   />
                 </div>
@@ -183,11 +159,13 @@ export default function ParentProfile() {
                     type="file"
                     id="profilePicture"
                     name="profilePicture"
+                    accept="image/*"
                     onChange={(e) => {
-                      setParent({
-                        ...parent,
-                        profilePicture: e.target.files[0],
-                      });
+                      const file = e.target.files[0];
+                      if (file) {
+                        setPreviewImage(URL.createObjectURL(file));
+                        setParent({ ...parent, profilePicture: file });
+                      }
                     }}
                     className="form-control"
                   />
@@ -195,25 +173,19 @@ export default function ParentProfile() {
                 <button type="submit" className="save-button">
                   Save Changes
                 </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => setIsEditing(false)}
-                >
+                <button className="btn btn-danger" onClick={() => setIsEditing(false)}>
                   Cancel
                 </button>
               </form>
             ) : (
               <div className="profile-summary">
                 <p>
-                  <strong>Address:</strong> {userData?.address}
-                </p>
-                <p>
                   <strong>Phone:</strong> {userData?.phone}
                 </p>
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="edit-button"
-                >
+                <p>
+                  <strong>Address:</strong> {userData?.address}
+                </p>
+                <button onClick={() => setIsEditing(true)} className="edit-button">
                   Edit Profile
                 </button>
               </div>
@@ -223,57 +195,29 @@ export default function ParentProfile() {
             <div className="events-section">
               <h3 className="section-title">Applied Events</h3>
               <ul className="list-group">
-                {
-                  appliedEvents?.length > 0 ? appliedEvents?.map((event) => (
+                {appliedEvents?.length > 0 ? (
+                  appliedEvents.map((event) => (
                     <li key={event?._id} className="list-group-item">
                       {event?.eventName}
-                      <span
-                        className={`badge ${
-                          event?.eventName &&
-                            "badge-success"
-                           
-                        }`}
-                      >
-                        {event?.eventName}
-                      </span>
                     </li>
-                  )): <p>There is no events</p>
-                }
-                {/* {appliedEvents?.map((event) => (
-                  <li key={event._id} className="list-group-item">
-                    {event.eventName}
-                    <span
-                      className={`badge ${
-                        event.eventName &&
-                          "badge-success"
-                         
-                      }`}
-                    >
-                      {event?.eventName}
-                    </span>
-                  </li>
-                ))} */}
+                  ))
+                ) : (
+                  <p>There are no events.</p>
+                )}
               </ul>
             </div>
             <div className="academies-section">
               <h3 className="section-title">Interested Academies</h3>
               <ul className="list-group">
-              {
-                  appliedTraining?.length > 0 ? appliedTraining?.map((event) => (
-                    <li key={event?._id} className="list-group-item">
-                      {event?.sessionName}
-                      <span
-                        className={`badge ${
-                          event?.sessionName &&
-                            "badge-success"
-                           
-                        }`}
-                      >
-                        {event?.sessionName}
-                      </span>
+                {appliedTraining?.length > 0 ? (
+                  appliedTraining.map((training) => (
+                    <li key={training?._id} className="list-group-item">
+                      {training?.sessionName}
                     </li>
-                  )): <p>There is no training</p>
-                }
+                  ))
+                ) : (
+                  <p>There are no training sessions.</p>
+                )}
               </ul>
             </div>
           </div>

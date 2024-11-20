@@ -10,6 +10,27 @@ const multer = require("multer");
 const Event = require("./Database/Model/AddEvent");
 const AddTraining = require("./Database/Model/AddTraining");
 const app = express();
+const http = require("http");
+const socketIo = require("socket.io");
+const mongoose = require("mongoose");
+
+const messageSchema = new mongoose.Schema({
+  sender: { type: mongoose.Schema.Types.ObjectId, required: true },
+  senderName: { type: String, required: true },
+  userType: { type: String, required: true }, // 'student' or 'academy'
+  message: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now }
+});
+
+const Message = mongoose.model('Message', messageSchema);
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 app.use(cookieparser());
 app.use(
   cors({
@@ -34,6 +55,49 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+app.get("/messages", async (req, res) => {
+  try {
+    const messages = await Message.find().sort({ timestamp: 1 });
+    res.json({ success: true, data: messages });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Socket.IO connection handling
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("sendMessage", async (data) => {
+    try {
+      const newMessage = new Message({
+        sender: data.userId,
+        senderName: data.senderName,
+        userType: data.userType,
+        message: data.message
+      });
+      
+      await newMessage.save();
+      
+      io.emit("message", {
+        _id: newMessage._id,
+        sender: newMessage.sender,
+        senderName: newMessage.senderName,
+        userType: newMessage.userType,
+        message: newMessage.message,
+        timestamp: newMessage.timestamp
+      });
+    } catch (error) {
+      console.error("Error saving message:", error);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
 
 app.post("/register", async (req, res) => {
   try {
@@ -211,15 +275,23 @@ app.put(
 );
 
 app.get("/academyInfo/:academyId", async (req, res) => {
+  console.log("I visited Here")
   try {
-    const academyId = req.params.academyId;
+    
+    const {academyId} = req.params
+    console.log("----", academyId)
     const academy = await Academy.findOne({ _id: academyId });
+    console.log("----------")
     console.log(academy);
+    console.log("----------")
+
     res.json({ message: "hello", data: academy });
-  } catch (error) {}
+  } catch (error) {
+     console.log(error)
+  }
 });
 
-app.listen(8000, () => {
+server.listen(8000, () => {
   console.log("Server is running on port 8000");
 });
 
@@ -326,7 +398,6 @@ app.put("/applyEvent/:eventId", async (req, res) => {
 
     if (event.registered.includes(userId)) {
       return res
-        .status(400)
         .json({ success: false, message: "Already Applied" });
     }
 
@@ -353,7 +424,6 @@ app.put("/applyTraining/:trainingId", async (req, res) => {
     if (training) {
       if (training.registered.includes(userId)) {
         return res
-          .status(400)
           .json({ success: false, message: "Already Applied" });
       }
     }
@@ -560,7 +630,7 @@ app.get("/allEvents", async (req, res) => {
 app.get("/eventdetails/:eventId", async (req, res) => {
   try {
     const eventId = req.params.eventId;
-    const event = await Event.findById(eventId);
+    const event = await Event.findById({_id: eventId});
     res.json({ message: "hello", data: event });
   } catch (error) {
     console.log(error.message);
@@ -579,8 +649,10 @@ app.get("/allTrainings", async (req, res) => {
 
 app.get("/trainingdetails/:trainingId", async (req, res) => {
   try {
+    console.log("Details");
     const trainingId = req.params.trainingId;
-    const training = await AddTraining.findById(trainingId);
+    const training = await AddTraining.findOne({_id: trainingId});
+    console.log("traiingDetails")
     res.json({ message: "hello", data: training });
   } catch (error) {
     console.log(error.message);
@@ -607,28 +679,66 @@ app.get("/academydetails/:academyId", async (req, res) => {
 });
 
 //list of users applied in specific event
+// app.get("/appliedUsers/:eventId", async (req, res) => {
+//   try {
+//     const eventId = req.params.eventId;
+//     const users = await Event.findById(eventId).populate("registered");
+//     console.log(users);
+//     res.json({ message: "hello", data: users });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// });
+
 app.get("/appliedUsers/:eventId", async (req, res) => {
   try {
     const eventId = req.params.eventId;
-    const users = await Event.findById(eventId).populate("registered");
+
+    // Fetch the event and populate the registered field
+    const event = await Event.findById(eventId).populate("registered");
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    console.log("Fetched Event with Registered Users:", event);
+    res.json({ message: "Applicants fetched successfully", data: event.registered });
+  } catch (error) {
+    console.error("Error fetching applicants:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//list of users applied in specific training
+app.get("/appliedTUsers/:trainingId", async (req, res) => {
+  try {
+    const trainingId = req.params.trainingId;
+    const users = await AddTraining.findById(trainingId).populate("registered");
     console.log(users);
-    res.json({ message: "hello", data: users });
+    res.json({ message: "hello", data: users.registered });
   } catch (error) {
     console.log(error.message);
   }
 });
 
-//list of users applied in specific training
-app.get("/appliedUsers/:trainingId", async (req, res) => {
+app.get("/latestevents",async(req,res)=>{
   try {
-    const trainingId = req.params.trainingId;
-    const users = await AddTraining.findById(trainingId).populate("registered");
-    console.log(users);
-    res.json({ message: "hello", data: users });
+    const latestEvents = await Event.find().sort({ createdAt: -1 })
+    return res.json({message:"success", data: latestEvents} )
   } catch (error) {
-    console.log(error.message);
+     res.json({message:"failed", data: error})
   }
-});
+})
+
+app.get("/latestTrainings", async(req,res)=>{
+  try {
+    const latestTrainings = await AddTraining.find().sort({ createdAt: -1 })
+    return res.json({message:"success", data: latestTrainings} )
+  } catch (error) {
+    res.json({message:"failed", data: error})
+  }
+
+})
 
 // logout all the users
 app.get("/logout", (req, res) => {

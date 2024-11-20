@@ -4,9 +4,9 @@
 }
 
 .footer-container {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 0 15px;
+  /* max-width: 1140px;
+  margin: 0 auto; */
+  padding: 30px 15px !important;
 }
 
 .footer-row {

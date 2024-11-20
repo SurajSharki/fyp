@@ -172,7 +172,7 @@ const AddTraining = () => {
                       onChange={(e) => {
                         setTrainingSessions({
                           ...trainingInfo,
-                          achievements: e.target.value,
+                          achievement: e.target.value,
                         });
                       }}
                       style={{ border: "1px solid black" }}
@@ -205,6 +205,48 @@ const AddTraining = () => {
                         setTrainingSessions({
                           ...trainingInfo,
                           cost: e.target.value,
+                        });
+                      }}
+                      style={{ border: "1px solid black" }}
+                    ></input>
+                  </div>
+                  <div className="training-form-group mb-3">
+                    <label className="training-form-label">Date</label>
+                    <input
+                      type="date"
+                      className="training-form-control"
+                      onChange={(e) => {
+                        setTrainingSessions({
+                          ...trainingInfo,
+                          date: e.target.value,
+                        });
+                      }}
+                      style={{ border: "1px solid black" }}
+                    ></input>
+                  </div>
+                  <div className="training-form-group mb-3">
+                    <label className="training-form-label">Time</label>
+                    <input
+                      type="time"
+                      className="training-form-control"
+                      onChange={(e) => {
+                        setTrainingSessions({
+                          ...trainingInfo,
+                          time: e.target.value,
+                        });
+                      }}
+                      style={{ border: "1px solid black" }}
+                    ></input>
+                  </div>
+                  <div className="training-form-group mb-3">
+                    <label className="training-form-label">Capacity</label>
+                    <input
+                      type="text"
+                      className="training-form-control"
+                      onChange={(e) => {
+                        setTrainingSessions({
+                          ...trainingInfo,
+                          capacity: e.target.value,
                         });
                       }}
                       style={{ border: "1px solid black" }}

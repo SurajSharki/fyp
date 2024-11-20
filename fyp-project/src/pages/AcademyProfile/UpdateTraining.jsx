@@ -150,9 +150,10 @@ const UpdateTraining = () => {
                     <input
                       type="text"
                       className="form-control"
+                      defaultValue={trainingInfo?.experience}
                       onChange={(e) => {
-                        setTrainingSessions({
-                          ...trainingInfo,
+                        setUpdateValue({
+                          ...updateValue,
                           experience: e.target.value,
                         });
                       }}
@@ -180,11 +181,11 @@ const UpdateTraining = () => {
                     <textarea
                       type="text"
                       className="form-control"
-                      defaultValue={trainingInfo?.achievements}
+                      defaultValue={trainingInfo?.achievement}
                       onChange={(e) => {
                         setUpdateValue({
                           ...updateValue,
-                          achievements: e.target.value,
+                          achievement: e.target.value,
                         });
                       }}
                       style={{ border: "1px solid black" }}
@@ -219,6 +220,51 @@ const UpdateTraining = () => {
                         setUpdateValue({
                           ...updateValue,
                           cost: e.target.value,
+                        });
+                      }}
+                      style={{ border: "1px solid black" }}
+                    ></input>
+                  </div>
+                  <div className="training-form-group mb-3">
+                    <label className="training-form-label">Date</label>
+                    <input
+                      type="date"
+                      className="training-form-control"
+                      defaultValue={trainingInfo?.date}
+                      onChange={(e) => {
+                        setUpdateValue({
+                          ...updateValue,
+                          date: e.target.value,
+                        });
+                      }}
+                      style={{ border: "1px solid black" }}
+                    ></input>
+                  </div>
+                  <div className="training-form-group mb-3">
+                    <label className="training-form-label">Time</label>
+                    <input
+                      type="time"
+                      className="training-form-control"
+                      defaultValue={trainingInfo?.time}
+                      onChange={(e) => {
+                        setUpdateValue({
+                          ...updateValue,
+                          time: e.target.value,
+                        });
+                      }}
+                      style={{ border: "1px solid black" }}
+                    ></input>
+                  </div>
+                  <div className="training-form-group mb-3">
+                    <label className="training-form-label">Capacity</label>
+                    <input
+                      type="text"
+                      className="training-form-control"
+                      defaultValue={trainingInfo?.capacity}
+                      onChange={(e) => {
+                        setUpdateValue({
+                          ...updateValue,
+                          capacity: e.target.value,
                         });
                       }}
                       style={{ border: "1px solid black" }}

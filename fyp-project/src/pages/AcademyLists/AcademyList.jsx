@@ -20,11 +20,11 @@ const AcademyList = () => {
   }, []);
   return (
     <>
-      <h1>Explore Our Academies</h1>
-      <div className="container">
+      <h2 className="mx-4 my-4">Explore Our Academies</h2>
+      <div className="container-fluid px-5">
         <div className="row">
           {academies.map((academy) => (
-            <div className="col-md-4 col-lg-4 col-12" key={academy.id}>
+            <div className="col-md-4 col-lg-4 col-12" key={academy?._id}>
               <SportsAcademyCard academies={academy} />
             </div>
           ))}

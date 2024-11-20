@@ -32,7 +32,13 @@ const academySchema = new mongoose.Schema({
   profilePicture: {
     type: String,
   },
+  facebookLink:{
+    type:String
 
+  },
+  instagramLink:{
+    type:String
+    },
   created: {
     type: Date,
     default: Date.now,

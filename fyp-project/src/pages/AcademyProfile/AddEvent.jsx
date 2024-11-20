@@ -109,7 +109,7 @@ const AddEvent = () => {
                     <select
                       className="form-select form-control-lg"
                       onChange={(e) => {
-                        setEvent({ ...eventInfo, games: e.target.value });
+                        setEvent({ ...eventInfo, game: e.target.value });
                       }}
                     >
                       <option value="">Select a game</option>
@@ -126,6 +126,48 @@ const AddEvent = () => {
                       className="form-control form-control-lg"
                       onChange={(e) => {
                         setEvent({ ...eventInfo, imgName: e.target.files[0] });
+                      }}
+                    ></input>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Starting Time</label>
+                    <input
+                      type="time"
+                      className="form-control form-control-lg"
+                      placeholder="Enter registration fee"
+                      onChange={(e) => {
+                        setEvent({
+                          ...eventInfo,
+                          time: e.target.value,
+                        });
+                      }}
+                    ></input>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Date</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-lg"
+                      placeholder="Enter registration fee"
+                      onChange={(e) => {
+                        setEvent({
+                          ...eventInfo,
+                          date: e.target.value,
+                        });
+                      }}
+                    ></input>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Capacity</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Enter registration fee"
+                      onChange={(e) => {
+                        setEvent({
+                          ...eventInfo,
+                          capacity: e.target.value,
+                        });
                       }}
                     ></input>
                   </div>
@@ -155,12 +197,12 @@ const AddEvent = () => {
                     ></input>
                   </div>
                   <div className="form-group d-flex justify-content-between">
-                    <button
+                    {/* <button
                       className="btn btn-primary px-4 py-2 shadow-lg"
                       type="update"
                     >
                       Update
-                    </button>
+                    </button> */}
                     <button
                       className="btn btn-success px-4 py-2 shadow-lg"
                       type="submit"
